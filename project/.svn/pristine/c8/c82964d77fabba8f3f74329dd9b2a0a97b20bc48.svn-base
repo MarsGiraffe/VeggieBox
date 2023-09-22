@@ -1,0 +1,17 @@
+package vgbox.vgboxService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import vgbox.vgboxDB.DAO.OrderinfoDao;
+import vgbox.vgboxDB.VO.Orderinfo;
+
+@Service
+public class OrderinfoService {
+	@Autowired
+	private OrderinfoDao dao;
+	
+	public void orderInsert(Orderinfo ins) {
+		dao.orderInsert(ins);
+	}
+}

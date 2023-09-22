@@ -1,0 +1,21 @@
+package vgbox.vgboxDB.DAO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import vgbox.vgboxDB.VO.Product;
+
+public interface StoreDao {
+	// 상품 불러오기
+	@Select("SELECT p.PRODUCT_NUM, p.ID, p.PRODUCT_NAME, p.PRICE, p.RESERVATION_PERIOD, p.FOR_SALE, pi.IMG, pi.IMG_1, pi.IMG_2, pi.IMG_3 FROM PRODUCT p JOIN PRD_IMG pi ON p.PRODUCT_NUM = pi.PRODUCT_NUM")
+	public List<Product> prdList();
+
+
+	
+	// 상품 상세 페이지로 넘어가기
+	@Select("SELECT * FROM PRODUCT WHERE PRODUCT_NUM = #{prd_num}")
+	public Product prdDetail(@Param("prd_num")int prd_num);
+	
+}

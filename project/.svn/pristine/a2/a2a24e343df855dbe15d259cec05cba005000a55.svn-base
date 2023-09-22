@@ -1,0 +1,43 @@
+package vgbox.vgboxDB.DAO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import vgbox.vgboxDB.VO.Cart;
+
+public interface CartDao {
+	
+	// 장바구니 넣기
+	@Insert("INSERT INTO CART (cart_num, product_num, id, count) VALUES (cart_seq.nextval, #{product_num}, #{id}, #{count})")
+	public void cartInsert(Cart ins);
+
+	// 장바구니 조회
+	@Select("SELECT C.CART_NUM, C.PRODUCT_NUM, C.ID, C.COUNT, P.PRICE, P.PRODUCT_NAME, PI.IMG\r\n"
+			+ "FROM CART C\r\n"
+			+ "JOIN PRODUCT P ON C.PRODUCT_NUM = P.PRODUCT_NUM\r\n"
+			+ "JOIN PRD_IMG PI ON C.PRODUCT_NUM = PI.PRODUCT_NUM WHERE C.ID = #{id}")
+	public List<Cart> cartList(String id);
+	
+	// 장바구니 상세 조회
+	@Select("SELECT P.PRODUCT_NUM, P.PRODUCT_NAME, P.PRICE, PI.IMG\r\n"
+			+ "FROM PRODUCT P\r\n"
+			+ "JOIN PRD_IMG PI ON\r\n"
+			+ "P.PRODUCT_NUM = PI.PRODUCT_NUM WHERE P.PRODUCT_NUM = #{prd_num}")
+	public Cart cartDetail(@Param("prd_num")int product_num);
+	
+	// 장바구니 삭제
+	@Select("DELETE FROM CART WHERE cart_num=#{cart_num}")
+	public void cartDelete(@Param("cart_num") int cart_num);
+	
+	// 가격과 수량 곱하는 dao 만들기
+	@Select("SELECT c.cart_num, c.product_num, c.id, c.count, c.price, " +
+	        "p.product_name, p.img " +
+	        "FROM cart c " +
+	        "INNER JOIN product p ON c.product_num = p.product_num " +
+	        "WHERE c.product_num = #{product_num}")
+	public Cart getPrice(@Param("product_num") int product_num);
+
+}

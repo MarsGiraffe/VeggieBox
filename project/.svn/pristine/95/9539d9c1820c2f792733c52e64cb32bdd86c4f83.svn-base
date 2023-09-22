@@ -1,0 +1,19 @@
+package vgbox.vgboxController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import vgbox.vgboxService.StoreService;
+
+public class StoreController {
+	@Autowired
+	private StoreService service;
+	
+	// http://localhost:5050/project/prdList.do
+	@RequestMapping("prdList.do")
+	public String prdList(Model d) {
+		d.addAttribute("prdList", service.prdList());
+		return "WEB-INF\\views\\store\\store.jsp";
+	}
+}

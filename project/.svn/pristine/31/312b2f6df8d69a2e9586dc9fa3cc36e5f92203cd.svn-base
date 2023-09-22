@@ -1,0 +1,166 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>    
+<c:set var="path" 
+	value="${pageContext.request.contextPath}"/>
+<fmt:requestEncoding value="utf-8"/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Kodinger">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>로그인 페이지</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="${path}/vgbox_front/login_join/css/login.css">
+	<script src = "https://code.jquery.com/jquery-3.7.0.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="${path}/vgbox_front/login_join/js/my-login.js"></script>
+</head>
+<body class="my-login-page">
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">로그인</h4>
+							<form method="POST" id="frm" novalidate="">
+								<div class="form-group">
+									<input type="radio" class="memChoice" name="choice" value="seller">판매자
+									<input type="radio" class="memChoice" name="choice" value="user" checked>구매자
+									<label for="id">아이디</label>
+									<input id="id" type="text" class="form-control" name="id" required autofocus>
+								</div>
+
+								<div class="form-group">
+									<label for="password">비밀번호
+									</label>
+									<input id="password" type="password" class="form-control" name="password" required data-eye>
+								</div>
+
+								<div class="form-group mt-4">
+									<button type="button" id="login" class="btn btn-primary btn-block">
+										로그인
+									</button>
+								</div>
+								<div class="mt-4 text-center">
+									계정이 없으신가요? <a href="${path}/memReg.do">회원가입</a>
+								</div>
+								<div class="mt-2 text-center">
+									계정을 잃어버리셨나요? <a href="#" data-toggle="modal" data-target="#forgotModal">아이디/비밀번호 찾기</a>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="footer">
+						Copyright &copy; 2023 &mdash; VeggieBox 
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">아이디/비밀번호 찾기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#ID" role="tab" aria-controls="pills-home" aria-selected="true">아이디 찾기</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#Password" role="tab" aria-controls="pills-profile" aria-selected="false">비밀번호 찾기</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="ID" role="tabpanel" aria-labelledby="pills-home-tab">
+            <!-- content for ID find -->
+            <form action="${path}/forgotID.do" method="post">
+              <div class="form-group">
+              	<input type="radio" class="memChoice" name="choice" value="seller">판매자
+			  	<input type="radio" class="memChoice" name="choice" value="user" checked>구매자
+                <label for="name">이름:</label>
+                <input type="text" class="form-control" id="name" placeholder="이름 입력" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="contact">연락처:</label>
+                <input type="text" class="form-control" id="contact" placeholder="연락처 입력" name="contact" required>
+              </div>
+              <button type="submit" class="btn btn-primary">아이디 찾기</button>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="Password" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <!-- content for password find -->
+            <form action="${path}/forgotPWD.do" method="post">
+              <div class="form-group">
+                <input type="radio" class="memChoice" name="choice" value="seller">판매자
+			  	<input type="radio" class="memChoice" name="choice" value="user" checked>구매자
+                <label for="name">이름:</label>
+                <input type="text" class="form-control" id="name" placeholder="이름 입력" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="id">아이디:</label>
+                <input type="text" class="form-control" id="id" placeholder="아이디 입력" name="id" required>
+              </div>
+              <div class="form-group">
+                <label for="contact">연락처:</label>
+                <input type="text" class="form-control" id="contact" placeholder="연락처 입력" name="contact" required>
+              </div>
+              <button type="submit" class="btn btn-primary">비밀번호 찾기</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+    $("#login").on('click',function(){
+        $.ajax({
+            type: "post",
+            url: "${path}/login.do",
+            data: $("#frm").serialize(),
+            success: function(response) {
+                if (response.trim() === "fail") {
+                    alert('아이디와 비밀번호가 틀렸습니다. 다시 확인해주세요');
+                    window.location.href = "${path}/login.do"
+                } else {
+                    window.location.href = "${path}/index.do";
+                }
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+    });
+});
+
+var forgotid = "${id}"
+if(forgotid == 'fail'){
+	alert('입력한 정보를 다시 확인해주세요')
+}else if(forgotid != '') {
+	alert('아이디는 '+forgotid+'입니다.')
+}
+
+var forgotpwd = "${pass}"
+if(forgotpwd == 'fail'){
+	alert('입력한 정보를 다시 확인해주세요')
+}else if(forgotpwd != '') {
+	alert('비밀번호는'+forgotpwd+'입니다.')
+}
+
+</script>
+</body>
+</html>

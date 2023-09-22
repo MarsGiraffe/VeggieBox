@@ -1,0 +1,28 @@
+package vgbox.vgboxDB.DAO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import vgbox.vgboxDB.VO.Member;
+import vgbox.vgboxDB.VO.Seller;
+
+public interface AdminDao {
+	
+	// 회원 조회
+	@Select("SELECT * FROM MEMBER_INFORMATION")
+	public List<Member> ADmemList();
+	
+	// 판매자 조회
+	@Select("SELECT * FROM SELLER_REG_INFO")
+	public List<Seller> ADsellerList();
+	
+	// 회원 상세 조회
+	@Select("SELECT * FROM MEMBER_INFORMATION WHERE id = #{id}")
+	public Member ADmemDetail(@Param("id")String id);
+	
+	// 회원 삭제
+	@Select("DELETE FROM MEMBER_INFORMATION mi WHERE id=#{id}")
+	public void ADdeleteMem(@Param("id")String id);
+}

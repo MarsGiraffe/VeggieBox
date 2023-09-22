@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="vgbox.vgboxDB.DAO.ProductDao">
+<!-- 상품 등록 -->
+
+<!-- 상품 불러오기
+<select id = "getProduct" resultType = "product">
+	SELECT PRODUCT_NUM, ID, PRODUCT_NAME, PRICE, RESERVATION_PERIOD, FOR_SALE
+	FROM PRODUCT
+	WHERE PRODUCT_NUM_ID = #{product_num}
+</select>
+ -->
+ 
+ <!-- 장바구니 등록 -->
+ <insert id = "inscart" parameterType = "cart">
+ 	INSERT INTO CART VALUES(#{cart_num}, #{product_num}, #{id}, #{count}
+ </insert>
+
+</mapper>

@@ -1,0 +1,30 @@
+package vgbox.vgboxController;
+
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import vgbox.vgboxDB.VO.Orderinfo;
+import vgbox.vgboxService.OrderinfoService;
+
+@Controller
+public class OrderinfoController {
+	@Autowired
+	private OrderinfoService service;
+	
+	@RequestMapping("orderList.do")
+	public String orderInsert(Orderinfo ins, Model d) {
+		if(ins.getId()==null) ins.setId("himan77");
+		if(ins.getPay_method()==null) ins.setPay_method("계좌이체");
+		if(ins.getShip_state()==null) ins.setShip_state("배송준비중");
+		ins.setOrder_date(new Date()); 
+		ins.setShip_begin_date(new Date());
+		service.orderInsert(ins);
+		d.addAttribute("proc", "ins");
+		return "WEB-INF\\views\\store\\checkout.jsp";
+	}
+	
+}

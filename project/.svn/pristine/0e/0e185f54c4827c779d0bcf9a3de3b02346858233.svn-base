@@ -1,0 +1,61 @@
+package vgbox.vgboxDB.DAO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import vgbox.vgboxDB.VO.Member;
+import vgbox.vgboxDB.VO.Monthly;
+import vgbox.vgboxDB.VO.Seller;
+
+public interface AdminDao {
+	
+	// 회원 조회
+	@Select("SELECT * FROM MEMBER_INFORMATION")
+	public List<Member> ADmemList();
+
+	// 회원 상세 조회
+	@Select("SELECT * FROM MEMBER_INFORMATION WHERE id = #{id}")
+	public Member ADmemDetail(@Param("id")String id);
+	
+	// 회원 삭제
+	@Select("DELETE FROM MEMBER_INFORMATION mi WHERE id=#{id}")
+	public void ADdeleteMem(@Param("id")String id);
+	
+	// 판매자 조회
+	@Select("SELECT * FROM SELLER_REG_INFO")
+	public List<Seller> ADsellerList();
+	
+	@Select("SELECT * FROM SELLER_REG_INFO WHERE id=#{id}")
+	public Seller ADsellDetail(@Param("id")String id);
+	
+	// 회원 삭제
+	@Select("DELETE FROM SELLER_REG_INFO WHERE id=#{id}")
+	public void ADsellerDelete(@Param("id")String id);
+	public void ADupdateSeller(Seller s);
+	public void ADinsertSeller(Seller s);
+	
+	// 메인페이지
+	@Select("SELECT count(*) membership FROM SELLER_REG_INFO sri ,MEMBERSHIP m WHERE sri.id  = m.id")
+	public int msSeller();
+	@Select("SELECT count(*) allSeller FROM SELLER_REG_INFO sri WHERE auth = '판매자'")
+	public int allSeller();
+	@Select("SELECT count(*) FROM MEMBER_INFORMATION")
+	public int allMember();	
+	@Select("SELECT sum(ORDER_PRICE) FROM ORDER_INFO WHERE EXTRACT (MONTH FROM sysdate) = EXTRACT (MONTH FROM order_date)")
+	public int currentMonthBenefit();
+	@Select("SELECT sum(ORDER_PRICE) FROM ORDER_INFO WHERE EXTRACT (year FROM sysdate) = EXTRACT (year FROM order_date)")
+	public int currentYearBenefit();
+	@Select("SELECT count(*) FROM ORDER_INFO WHERE SHIP_STATE = '배송완료'")
+	public int shipCompleteCount();
+	@Select("SELECT count(*) FROM ORDER_INFO")
+	public int allOrderCount();
+	
+	
+	// 월 별 매출
+	public Monthly monthlyBenefit();
+	
+	
+	
+}

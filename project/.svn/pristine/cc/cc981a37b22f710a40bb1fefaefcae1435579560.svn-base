@@ -1,0 +1,144 @@
+package vgbox.vgboxService;
+
+import java.util.HashMap;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import vgbox.vgboxDB.DAO.AdminDao;
+import vgbox.vgboxDB.DAO.MemberDao;
+import vgbox.vgboxDB.VO.Member;
+import vgbox.vgboxDB.VO.Seller;
+
+@Service
+public class MemberService {
+	@Autowired
+	public MemberDao dao;
+	public AdminDao daoAD;
+	
+	
+	
+	// 아이디 중복 체크
+	public String checkID(String choice, String id) {
+		
+		String check = "";
+		
+			if(choice.equals("user")) {
+				if(dao.checkID(id) == null) {
+					check = "true";
+				} else if (dao.checkID(id) != null) {
+					check = "false";
+				}
+			}else if(choice.equals("seller")) {
+				if(dao.checkIDs(id) == null) {
+					check = "true";
+				} else if(dao.checkIDs(id) != null) {
+					check = "false";
+				}
+			}	
+		return check;
+	}
+
+	// 회원가입
+	public String join(String choice, Member m, Seller s) {
+		
+		String result = "";
+		
+		if(!choice.equals("")) {
+			if(choice.equals("user")&&!m.getId().equals("")&&!m.getPassword().equals("")) {
+				dao.join(m);
+				result = "success";
+			}else if(choice.equals("seller")&&!s.getId().equals("")&&!s.getPassword().equals("")) {
+				dao.joinSeller(s);
+				result = "success";
+			}else {
+				result = "fail";
+			}
+		}
+		
+		return result;
+	}
+	
+	// 로그인
+	
+	public Member login(String id, String pass) {
+							
+		return dao.login(id, pass);
+		
+	}
+	
+	public Seller loginS(String id, String pass) {
+		
+		return dao.loginS(id, pass);
+	}
+	
+	// 아이디 찾기
+	public String findID(String choice, Member m, Seller s) {
+		Member mem = dao.allFindIDm(m.getName(), m.getContact());
+		Seller sell = dao.allFindIDs(s.getName(), s.getContact());	
+		String id = "";		
+		if(choice.equals("user")) {
+			if(mem != null) {
+				id = mem.getId();
+			}else {
+				id = "fail";
+			}
+		}else if(choice.equals("seller")) {
+			if(sell != null) {
+				id = sell.getId();
+			}else {
+				id = "fail";
+			}
+		}		
+		return id;
+	}
+	
+	// 비밀번호 찾기 
+	public String findPwd(String choice, Member m, Seller s) {
+		String pass = "";
+		Member mem = dao.allFindPWDm(m.getName(), m.getId(), m.getContact());
+		Seller sell = dao.allFindPWDs(s.getName(), s.getId(), s.getContact());
+		if(choice.equals("user")) {
+			if(mem != null) {
+				pass = mem.getPassword();
+			}else {
+				pass = "fail";
+			}
+		}else if (choice.equals("seller")) {
+			if(sell != null) {
+				pass = sell.getPassword();
+			}else {
+				pass = "fail";
+			}
+		}
+		return pass;
+	}
+	
+	// 휴대폰 인증
+	public String PhoneNumberCheck(String to) throws CoolsmsException{
+		String api_key = "NCSNNEQMOP1M7HHE";
+		String api_secret = "O649XEQ2OLZJ0Z0PALE1VERK1BJIMFQL";
+		Message coolsms = new Message(api_key, api_secret);
+			
+		Random rand = new Random(); 
+		String numStr = "";
+		for(int i=0; i<4; i++) {
+			String ran = Integer.toString(rand.nextInt(10)); 
+			numStr += ran;
+		}
+		String phoneNum = to.replaceAll("-", "");
+		HashMap<String, String> params = new HashMap<String, String>();
+	    params.put("to", phoneNum);    // 수신전화번호 (ajax로 view 화면에서 받아온 값으로 넘김)
+	    params.put("from", "01065996123");    // 발신전화번호.
+	    params.put("type", "sms"); 
+	    params.put("text", "VeggieBox 인증번호는 [" + numStr + "] 입니다.");
+	 
+	    coolsms.send(params); // 메시지 전송
+			    
+		return numStr;
+		 
+	}
+}	

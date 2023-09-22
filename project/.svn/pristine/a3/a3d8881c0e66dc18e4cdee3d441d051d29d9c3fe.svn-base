@@ -1,0 +1,75 @@
+package vgbox.vgboxService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import vgbox.vgboxDB.DAO.AdminDao;
+import vgbox.vgboxDB.DAO.MemberDao;
+import vgbox.vgboxDB.VO.Member;
+import vgbox.vgboxDB.VO.Seller;
+
+@Service
+public class MemberService {
+	@Autowired
+	public MemberDao dao;
+	public AdminDao daoAD;
+	
+	
+	
+	// 아이디 중복 체크
+	public String checkID(String choice, String id) {
+		
+		String check = "";
+		
+			if(choice.equals("user")) {
+				if(dao.checkID(id) == null) {
+					check = "true";
+				} else if (dao.checkID(id) != null) {
+					check = "false";
+				}
+			}else if(choice.equals("seller")) {
+				if(dao.checkIDs(id) == null) {
+					check = "true";
+				} else if(dao.checkIDs(id) != null) {
+					check = "false";
+				}
+			}	
+		return check;
+	}
+
+	// 회원가입
+	public String join(String choice, Member m, Seller s) {
+		
+		String result = "";
+		
+		if(!choice.equals("")) {
+			if(choice.equals("user")&&!m.getId().equals("")&&!m.getPassword().equals("")) {
+				dao.join(m);
+				result = "success";
+			}else if(choice.equals("seller")&&!s.getId().equals("")&&!s.getPassword().equals("")) {
+				dao.joinSeller(s);
+				result = "success";
+			}else {
+				result = "fail";
+			}
+		}
+		
+		return result;
+	}
+	
+	// 로그인
+	
+	public Member login(String id, String pass) {
+							
+		return dao.login(id, pass);
+		
+	}
+	
+	public Seller loginS(String id, String pass) {
+		
+		return dao.loginS(id, pass);
+	}
+	
+}	

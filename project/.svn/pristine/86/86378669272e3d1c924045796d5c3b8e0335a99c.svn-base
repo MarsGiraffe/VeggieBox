@@ -1,0 +1,26 @@
+package vgbox.vgboxService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import vgbox.vgboxDB.DAO.StoreDao;
+import vgbox.vgboxDB.VO.Cart;
+import vgbox.vgboxDB.VO.Product;
+
+@Service
+public class StoreService {
+	@Autowired
+	private StoreDao dao;
+	
+	public List<Product> prdList() {
+		return dao.prdList();
+	}
+	
+	public Product prdDetail(int prd_num) {
+		return dao.prdDetail(prd_num);
+	}
+	
+
+}

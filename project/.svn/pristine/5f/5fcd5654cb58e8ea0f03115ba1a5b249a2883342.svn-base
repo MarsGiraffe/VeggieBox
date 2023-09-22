@@ -1,0 +1,56 @@
+package vgbox.vgboxService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import vgbox.vgboxDB.DAO.AdminDao;
+import vgbox.vgboxDB.VO.Member;
+import vgbox.vgboxDB.VO.Seller;
+
+@Service
+public class AdminService {
+	@Autowired
+	private AdminDao dao;
+	
+	public List<Member> ADmemList(){
+		return dao.ADmemList();
+	}
+	public List<Seller> ADsellerList(){
+		return dao.ADsellerList();
+	}
+	public Member ADmemDetail(String id) {
+		//Member m = ADmemDetail(id);
+		//System.out.println(m.getGradeName());
+		return dao.ADmemDetail(id);
+	}
+	public void ADdeleteMem(String id) {
+		dao.ADdeleteMem(id);
+	};
+	public Seller ADsellDetail(String id) {
+		return dao.ADsellDetail(id);
+	}
+	
+	public void ADupdateSeller(Seller s) {
+		dao.ADupdateSeller(s);
+	}
+	
+	public void ADinsertSeller(Seller s) {
+		dao.ADinsertSeller(s);
+	}
+	public void ADsellerDelete(String id) {
+		dao.ADsellerDelete(id);
+	}
+	
+	public int msSeller() {
+		return dao.msSeller();
+	}
+	public int allSeller() {
+		return dao.allSeller();
+	}
+	
+		
+	
+	
+}

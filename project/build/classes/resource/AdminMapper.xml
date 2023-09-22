@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="vgbox.vgboxDB.DAO.AdminDao">
+<!-- 
+	<select id="ADmemList" resultmType="Member">
+		SELECT * FROM MEMBER_INFORMATION
+	</select>
+	 -->
+	 
+	<update id="ADupdateSeller" parameterType="seller">
+		UPDATE SELLER_REG_INFO
+			SET PASSWORD  = #{password},
+				NAME = #{name},
+				ADDRESS  = #{address},
+				CONTACT = #{contact},
+				BUSINESS_NUM = #{business_num},
+				AUTH  = #{auth}
+			WHERE id = #{id}
+	</update>
+	
+	<insert id="ADinsertSeller" parameterType="seller">
+		INSERT INTO SELLER_REG_INFO VALUES 
+		(#{id},#{password},#{name},#{address},
+			#{contact},#{business_num},#{auth})
+	</insert>
+	
+	<select id="monthlyBenefit" resultType="monthly">
+		SELECT nvl("JAN",0) AS JAN, nvl("FEB",0) FEB, nvl("MAR",0) MAR,nvl("APR",0) APR,
+				nvl("MAY",0) MAY, nvl("JUN",0) JUN, nvl("JUL",0) JUL,nvl("AUG",0) AUG,
+				nvl("SEP",0) SEP, nvl("OCT",0) OCT,nvl("NOV",0) NOV,nvl("DEC",0) DEC
+		FROM (
+		 	  SELECT TO_CHAR(order_date, 'YYYY-MM') AS order_month, NVL(order_price, 0) AS order_price
+			    FROM ORDER_INFO
+			)
+			PIVOT (
+			    sum(order_price) FOR order_month IN (
+		        '2023-01' AS "JAN",
+		        '2023-02' AS "FEB",
+		        '2023-03' AS "MAR",
+		        '2023-04' AS "APR",
+		        '2023-05' AS "MAY",
+		        '2023-06' AS "JUN",
+		        '2023-07' AS "JUL",
+		        '2023-08' AS "AUG",
+		        '2023-09' AS "SEP",
+		        '2023-10' AS "OCT",
+		        '2023-11' AS "NOV",
+		        '2023-12' AS "DEC"
+		    )
+	    
+		)
+	</select>
+	
+	<select id="getMemshipList" resultType="membership">
+		SELECT
+			sri.id,
+		    m.product_num,
+		    to_char(nvl(m.MEMS_BEGIN_DATE,''),'YYYY-MM-DD') MEMS_BEGIN_DATE,
+		    to_char(nvl(m.MEMS_END_DATE,''),'YYYY-MM-DD') MEMS_END_DATE,
+		    sri.NAME,
+		    sri.BUSINESS_NUM,
+		    p.PRODUCT_NAME,
+		    CASE
+		        WHEN p.FOR_SALE = 0 THEN '준비중'
+		        WHEN p.FOR_SALE = 1 THEN '판매중'
+		        ELSE 'Unknown'
+		    END AS FOR_SALE
+		FROM
+		    MEMBERSHIP m,
+		    PRODUCT p,
+		    SELLER_REG_INFO sri
+		WHERE
+			sri.id = p.id and
+			m.product_num = p.product_num
+		ORDER BY p.FOR_SALE  DESC, MEMS_END_DATE desc
+	</select>
+	
+	<update id="ADuptMemship" parameterType="membership">
+		UPDATE MEMBERSHIP 
+					SET mems_begin_date = #{mems_begin_date},
+						MEMS_END_DATE = #{mems_end_date}
+					WHERE PRODUCT_NUM = #{product_num}
+	</update>
+
+</mapper>

@@ -1,0 +1,10 @@
+# 공통설정 파일
+# 1. DB 설정 정보
+jdbc.driver = oracle.jdbc.driver.OracleDriver
+jdbc.url = jdbc:oracle:thin:@122.99.163.86:1521:xe
+jdbc.user = himan
+jdbc.pass = 7777
+
+# 2. 파일 업로드 경로
+admin.upload = F:/Eclipse/workspace_VGbox/project/src/main/webapp/upFold
+

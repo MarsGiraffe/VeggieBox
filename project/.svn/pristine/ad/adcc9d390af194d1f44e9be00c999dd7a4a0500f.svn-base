@@ -1,0 +1,29 @@
+package vgbox.vgboxController;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import vgbox.vgboxService.StoreService;
+
+@Controller
+public class StoreController {
+	@Autowired
+	private StoreService service;
+
+	// http://localhost:5050/project/prdList.do
+	@RequestMapping("prdList.do")
+	public String prdList(Model d) {
+		d.addAttribute("prdList", service.prdList());
+		return "WEB-INF\\views\\store\\store.jsp";
+	}
+	// http://localhost:5050/project/prdDetail.do
+	@RequestMapping("prdDetail.do")
+	public String prdDetails(@RequestParam("product_num") int prd_num, Model d) {
+		d.addAttribute("prdDetail", service.prdDetail(prd_num));
+		return "WEB-INF\\views\\store\\product-details.jsp";
+	}
+}

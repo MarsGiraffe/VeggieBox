@@ -1,0 +1,36 @@
+package vgbox.vgboxController;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import vgbox.vgboxDB.VO.Cart;
+import vgbox.vgboxService.CartService;
+
+@Controller
+public class CartController {
+	
+	@Autowired
+	private CartService service;
+	
+	@RequestMapping("cartList.do")
+	public String cartList(@RequestParam(value = "id", defaultValue = "himan88")String id, Model d) {
+		d.addAttribute("cartList", service.cartList(id));
+		return "WEB-INF\\views\\store\\checkout.jsp";
+	}
+	
+	@RequestMapping("cartDetail.do")
+	public String cartDetail(@RequestParam("product_num") int prd_num, Model d) {
+		d.addAttribute("cartDetail", service.cartDetail(prd_num));
+		return "WEB-INF\\views\\store\\checkout.jsp";
+	}
+	@RequestMapping("cartInsert.do")
+	public String cartInsert(Cart ins, Model d) {
+		if(ins.getId()==null) ins.setId("himan88");
+		service.cartInsert(ins);
+		d.addAttribute("proc", "ins");
+		return "WEB-INF\\views\\store\\checkout.jsp";
+	}
+}

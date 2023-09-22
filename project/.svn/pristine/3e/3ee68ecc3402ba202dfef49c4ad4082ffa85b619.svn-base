@@ -1,0 +1,17 @@
+package vgbox.vgboxDB.DAO;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+
+import vgbox.vgboxDB.VO.Orderinfo;
+
+public interface OrderinfoDao {
+	@Insert("INSERT INTO ORDER_INFO (order_num, cart_num, order_date, pay_method, ship_address, ship_state, ship_begin_date, order_price, address, id) " +
+	        "VALUES (TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || LPAD(ord_num_seq.nextval, 3, '0'), #{cart_num}, TRUNC(SYSDATE, 'MONTH'), " +
+	        "#{pay_method}, #{ship_address}, #{ship_state}, #{ship_begin_date}, #{order_price}, #{address}, #{id})")
+	public void orderInsert(Orderinfo ins);
+
+
+
+}

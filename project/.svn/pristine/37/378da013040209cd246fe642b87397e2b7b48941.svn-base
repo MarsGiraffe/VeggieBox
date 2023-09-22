@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="vgbox.vgboxDB.DAO.AdminDao">
+<!-- 
+	<select id="ADmemList" resultmType="Member">
+		SELECT * FROM MEMBER_INFORMATION
+	</select>
+	 -->
+	 
+	<update id="ADupdateSeller" parameterType="seller">
+		UPDATE SELLER_REG_INFO
+			SET PASSWORD  = #{password},
+				NAME = #{name},
+				ADDRESS  = #{address},
+				CONTACT = #{contact},
+				BUSINESS_NUM = #{business_Num},
+				AUTH  = #{auth}
+			WHERE id = #{id}
+	</update>
+	
+	<insert id="ADinsertSeller" parameterType="seller">
+		INSERT INTO SELLER_REG_INFO VALUES 
+		(#{id},#{password},#{name},#{address},
+			#{contact},#{business_Num},#{auth})
+	</insert>
+
+</mapper>
